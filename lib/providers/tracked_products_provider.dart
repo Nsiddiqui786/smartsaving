@@ -6,19 +6,21 @@ import '../services/amazon_service.dart';
 import '../services/flipkart_service.dart';
 
 final trackedProductsProvider =
-    StateNotifierProvider<
+    NotifierProvider<
       TrackedProductsNotifier,
       AsyncValue<List<TrackedProduct>>
-    >((ref) {
+    >(() {
       return TrackedProductsNotifier();
     });
 
 class TrackedProductsNotifier
-    extends StateNotifier<AsyncValue<List<TrackedProduct>>> {
+    extends Notifier<AsyncValue<List<TrackedProduct>>> {
   final _trackingData = <String, List<PriceSnapshot>>{};
 
-  TrackedProductsNotifier() : super(const AsyncValue.data([])) {
+  @override
+  AsyncValue<List<TrackedProduct>> build() {
     _loadTrackedProducts();
+    return const AsyncValue.data([]);
   }
 
   Future<void> _loadTrackedProducts() async {
@@ -180,7 +182,7 @@ class TrackedProductsNotifier
   }
 }
 
-final isProductTrackedProvider = StateProvider.family<bool, String>((
+final isProductTrackedProvider = Provider.family<bool, String>((
   ref,
   productId,
 ) {

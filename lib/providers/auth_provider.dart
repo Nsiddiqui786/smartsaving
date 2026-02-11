@@ -10,12 +10,13 @@ final authInitializeProvider = FutureProvider((ref) async {
 });
 
 final currentUserProvider =
-    StateNotifierProvider<CurrentUserNotifier, AsyncValue<User?>>((ref) {
+    NotifierProvider<CurrentUserNotifier, AsyncValue<User?>>(() {
       return CurrentUserNotifier();
     });
 
-class CurrentUserNotifier extends StateNotifier<AsyncValue<User?>> {
-  CurrentUserNotifier() : super(const AsyncValue.loading());
+class CurrentUserNotifier extends Notifier<AsyncValue<User?>> {
+  @override
+  AsyncValue<User?> build() => const AsyncValue.loading();
 
   Future<void> initialize() async {
     try {

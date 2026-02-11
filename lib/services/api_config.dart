@@ -1,8 +1,5 @@
 /// Configuration for external APIs
 class ApiConfig {
-  // ⚠️ SECURITY WARNING: API keys are sensitive!
-  // DO NOT COMMIT THESE TO GITHUB! Use environment variables in production.
-
   // RapidAPI Configuration - Amazon
   static const String rapidApiHost = 'amazon-product-review.p.rapidapi.com';
   static const String rapidApiKey =

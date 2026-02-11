@@ -9,15 +9,18 @@ final flipkartServiceProvider = Provider((ref) => flipkartService);
 final searchQueryProvider = StateProvider<String>((ref) => 'Popular');
 
 final productsProvider =
-    StateNotifierProvider<ProductsNotifier, AsyncValue<List<Product>>>((ref) {
-      final query = ref.watch(searchQueryProvider);
-      return ProductsNotifier(query);
+    NotifierProvider<ProductsNotifier, AsyncValue<List<Product>>>(() {
+      return ProductsNotifier();
     });
 
-class ProductsNotifier extends StateNotifier<AsyncValue<List<Product>>> {
-  final String query;
-  ProductsNotifier(this.query) : super(const AsyncValue.loading()) {
+class ProductsNotifier extends Notifier<AsyncValue<List<Product>>> {
+  late String query;
+
+  @override
+  AsyncValue<List<Product>> build() {
+    query = ref.watch(searchQueryProvider);
     _searchProducts();
+    return const AsyncValue.loading();
   }
 
   Future<void> _searchProducts() async {

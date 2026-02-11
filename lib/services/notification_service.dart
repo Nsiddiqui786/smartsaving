@@ -20,7 +20,12 @@ class NotificationService {
     const iOS = DarwinInitializationSettings();
     const initSettings = InitializationSettings(android: android, iOS: iOS);
 
-    await _flutterLocalNotificationsPlugin.initialize(initSettings);
+    await _flutterLocalNotificationsPlugin.initialize(
+      settings: initSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        // Handle notification response
+      },
+    );
 
     _isInitialized = true;
   }
@@ -46,10 +51,11 @@ class NotificationService {
     );
 
     await _flutterLocalNotificationsPlugin.show(
-      DateTime.now().millisecond,
-      'Price Dropped! 🎉',
-      '$productName: $oldPrice → $newPrice',
-      details,
+      id: DateTime.now().millisecond,
+      title: 'Price Dropped! 🎉',
+      body: '$productName: $oldPrice → $newPrice',
+      notificationDetails: details,
+      payload: 'price_drop',
     );
   }
 
@@ -74,10 +80,11 @@ class NotificationService {
     );
 
     await _flutterLocalNotificationsPlugin.show(
-      DateTime.now().millisecond,
-      'Alert Triggered! ✅',
-      '$productName is now ₹$currentPrice (Target: ₹$targetPrice)',
-      details,
+      id: DateTime.now().millisecond,
+      title: 'Alert Triggered! ✅',
+      body: '$productName is now ₹$currentPrice (Target: ₹$targetPrice)',
+      notificationDetails: details,
+      payload: 'price_alert',
     );
   }
 
@@ -100,10 +107,11 @@ class NotificationService {
     );
 
     await _flutterLocalNotificationsPlugin.show(
-      DateTime.now().millisecond,
-      title,
-      body,
-      details,
+      id: DateTime.now().millisecond,
+      title: title,
+      body: body,
+      notificationDetails: details,
+      payload: 'generic',
     );
   }
 }
